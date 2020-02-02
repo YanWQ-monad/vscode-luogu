@@ -18,6 +18,34 @@ export const axios = axiosCookieJarSupport(_.create({
   jar
 }))
 
+export const setClientID = async (value: string) => new Promise((resolve, reject) => {
+  const cookie = new Cookie({
+    key: '__client_id',
+    value,
+    path: '/',
+    domain: API.cookieDomain
+  })
+
+  jar.setCookie(cookie, API.baseURL, (err, _) => {
+    if (err) {
+      reject(err)
+    } else {
+      resolve()
+    }
+  })
+})
+
+export const getClientID = async (): Promise<string | null> => new Promise((resolve, reject) => {
+  jar.getCookies(API.baseURL, (err, cookies) => {
+    if (err) {
+      reject(err);
+    } else {
+      let cookie = cookies.find((cookie) => cookie.key === '__client_id');
+      resolve(cookie ? cookie.value : null)
+    }
+  })
+})
+
 export const searchProblem = async (pid: string) =>
   axios.get(API.SEARCH_PROBLEM(pid))
     .then(res => res.data.data || null)
