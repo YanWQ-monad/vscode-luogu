@@ -1,7 +1,7 @@
 import _ from 'axios'
 
 export namespace API {
-  export const baseURL = 'https://www.luogu.org'
+  export const baseURL = 'https://www.luogu.com.cn'
   export const apiURL = '/api'
   export const SEARCH_PROBLEM = (pid: string) => API.apiURL + '/problem/detail' + `/${pid}`
   export const ACCESS_TOKEN = '/OAuth2/accessToken'
