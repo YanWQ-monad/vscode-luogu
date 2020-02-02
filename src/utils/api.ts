@@ -10,6 +10,7 @@ export namespace API {
   export const SEARCH_PROBLEM = (pid: string) => API.apiURL + '/problem/detail' + `/${pid}`
   export const ACCESS_TOKEN = '/OAuth2/accessToken'
   export const cookieDomain = 'luogu.com.cn'
+  export const CAPTCHA_IMAGE = `${apiURL}/verify/captcha`
 }
 
 export const jar = new CookieJar();
@@ -69,6 +70,15 @@ export const csrfToken = async () =>
       const result = CSRF_TOKEN_REGEX.exec(res.data)
       return result ? result[1].trim() : null
     })
+
+export const captcha = async () =>
+  axios.get(API.CAPTCHA_IMAGE, {
+    params: {
+      '_t': new Date().getTime()
+    },
+    responseType: 'arraybuffer'
+  })
+  .then(resp => resp.data ? Buffer.from(resp.data, 'binary') : null)
 
 export const searchProblem = async (pid: string) =>
   axios.get(API.SEARCH_PROBLEM(pid))
