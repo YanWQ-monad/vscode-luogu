@@ -5,18 +5,18 @@
   "icon": "resources/img/luogu-normal.png",
   "version": "0.2.2",
   "license": "MIT",
-  "publisher": "himself6565",
+  "publisher": "YanWQmonad",
   "engines": {
     "vscode": "^1.25.0"
   },
-  "homepage": "https://github.com/Himself65/vscode-luogu/blob/master/README.md",
+  "homepage": "https://github.com/YanWQ-monad/vscode-luogu/blob/master/README.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/himself65/vscode-luogu.git"
+    "url": "https://github.com/YanWQ-monad/vscode-luogu.git"
   },
   "bugs": {
-    "url": "https://github.com/himself65/vscode-luogu/issues",
-    "email": "himself6565@gmail.com"
+    "url": "https://github.com/YanWQ-monad/vscode-luogu/issues",
+    "email": "YanWQmonad@gmail.com"
   },
   "categories": [
     "Other",
