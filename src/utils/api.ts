@@ -14,11 +14,26 @@ export namespace API {
 
 export const jar = new CookieJar();
 
-export const axios = axiosCookieJarSupport(_.create({
-  baseURL: API.baseURL,
-  withCredentials: true,
-  jar
-}))
+export const axios = (() => {
+  const axios = _.create({
+    baseURL: API.baseURL,
+    withCredentials: true,
+    jar
+  })
+
+  const defaults = axios.defaults;
+  if (!defaults.transformRequest) {
+    defaults.transformRequest = []
+  } else if (!(defaults.transformRequest instanceof Array)) {
+    defaults.transformRequest = [defaults.transformRequest];
+  }
+  defaults.transformRequest.push((data, headers) => {
+    headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
+    return data
+  })
+
+  return axiosCookieJarSupport(axios)
+})()
 
 export const setClientID = async (value: string) => new Promise((resolve, reject) => {
   const cookie = new Cookie({
