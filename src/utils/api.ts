@@ -7,10 +7,11 @@ export const CSRF_TOKEN_REGEX = /<meta name="csrf-token" content="(.*)">/
 export namespace API {
   export const baseURL = 'https://www.luogu.com.cn'
   export const apiURL = '/api'
-  export const SEARCH_PROBLEM = (pid: string) => API.apiURL + '/problem/detail' + `/${pid}`
-  export const ACCESS_TOKEN = '/OAuth2/accessToken'
   export const cookieDomain = 'luogu.com.cn'
+  export const SEARCH_PROBLEM = (pid: string) => `${apiURL}/problem/detail/${pid}`
   export const CAPTCHA_IMAGE = `${apiURL}/verify/captcha`
+  export const LOGIN_ENDPOINT = `${apiURL}/auth/userPassLogin`
+  export const LOGIN_REFERER = `${baseURL}/auth/login`
 }
 
 export const jar = new CookieJar();
@@ -84,17 +85,16 @@ export const searchProblem = async (pid: string) =>
   axios.get(API.SEARCH_PROBLEM(pid))
     .then(res => res.data.data || null)
 
-export const OAUTH2_INFO = {
-  grant_type: 'password',
-  client_id: 'luogu-vscode',
-  client_secret: 'Asdf1234Excited111'
-}
-
-export const login = async (username: string, password: string) =>
-  axios.post(API.ACCESS_TOKEN, {
-    OAUTH2_INFO,
+export const login = async (username: string, password: string, captcha: string) =>
+  axios.post(API.LOGIN_ENDPOINT, {
     username,
-    password
+    password,
+    captcha
+  }, {
+    headers: {
+      'X-CSRF-Token': await csrfToken(),
+      'Referer': API.LOGIN_REFERER
+    }
   }).then(res => res.data || null)
 
 export default axios
