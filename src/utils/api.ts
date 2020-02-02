@@ -2,6 +2,8 @@ import _ from 'axios'
 import { Cookie, CookieJar } from 'tough-cookie'
 import axiosCookieJarSupport from 'axios-cookiejar-support'
 
+export const CSRF_TOKEN_REGEX = /<meta name="csrf-token" content="(.*)">/
+
 export namespace API {
   export const baseURL = 'https://www.luogu.com.cn'
   export const apiURL = '/api'
@@ -45,6 +47,13 @@ export const getClientID = async (): Promise<string | null> => new Promise((reso
     }
   })
 })
+
+export const csrfToken = async () =>
+  axios.get(API.baseURL)
+    .then(res => {
+      const result = CSRF_TOKEN_REGEX.exec(res.data)
+      return result ? result[1].trim() : null
+    })
 
 export const searchProblem = async (pid: string) =>
   axios.get(API.SEARCH_PROBLEM(pid))
